@@ -1,0 +1,17 @@
+$def with (subjects)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>subject-add</title>
+</head>
+<body>
+    <form method="post" action="">
+        <input type="text" name="title" size="60%" placeholder="这里输入主题">
+        <br/>
+        <input type="submit" name="submit" value="添加">
+    </form>
+    $for subject in subjects:
+        <a href="#">$subject.title</a>&nbsp&nbsp&nbsp<a href="question?sid=$subject.Id">添加问题</a>
+        <hr/>
+</body>
+</html>

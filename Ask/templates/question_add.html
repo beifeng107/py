@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>question-add</title>
+    <script type="text/javascript">
+        function showForm() {
+            var qform=document.getElementById("qform")
+            var qtype=qform.qtype.value
+            var pdt=document.getElementById("pdt")
+            var xzt=document.getElementById("xzt")
+
+            if (qtype == "0") {
+                pdt.style.display="none";
+                xzt.style.display="block";
+            } else {
+                xzt.style.display="none";
+                pdt.style.display="block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <form id='qform' method="post" action="">
+        问题：<input type="text" name="title" size="60%" placeholder="这里输入问题">
+        <select name="qtype" onchange="showForm()">
+          <option value="0">选择题</option>
+          <option value="1">判断题</option>
+        </select>
+        <hr/>
+        <div id='pdt' style="display: none;">
+            <label>正确答案:</label>
+            <select name="Ranwser">
+              <option value="yes">---对---</option>
+              <option value="no">---错---</option>
+            </select>
+        </div>
+        <div id='xzt'>
+            <textarea name="options" style="width: 60%;height: 500px;margin-top: 5px" placeholder="这里输入选项，用竖线‘|’分割"></textarea>
+            <br/>
+            <label>正确答案:</label>
+            <input type="text" name="Ranwser" size="20%" placeholder="这里输入正确答案的选项">
+        </div>
+        <textarea name="explanation" style="width: 60%;height: 500px;margin-top: 5px" placeholder="这里输入对该问题的解释"></textarea>
+        <br/>
+        <input type="submit" name="submit" value="添加">
+    </form>
+</body>
+</html>
