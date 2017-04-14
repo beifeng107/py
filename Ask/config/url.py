@@ -3,7 +3,8 @@
 prefix = 'controllers.'
 
 urls = (
-    '/','index',
-    '/admin',prefix+'manage.subject',
-    '/question',prefix+'manage.question',
+    '/',          prefix+'manage.index',
+    '/admin',     prefix+'manage.subject',
+    '/question',  prefix+'manage.question',
+    '/show',      prefix+'manage.show',
     )

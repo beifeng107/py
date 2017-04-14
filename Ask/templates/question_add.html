@@ -1,7 +1,9 @@
+$def with (sid)
 <!DOCTYPE html>
 <html>
 <head>
     <title>question-add</title>
+    <meta charset="utf-8" /> 
     <script type="text/javascript">
         function showForm() {
             var qform=document.getElementById("qform")
@@ -21,7 +23,7 @@
 </head>
 <body>
     <form id='qform' method="post" action="">
-        问题：<input type="text" name="title" size="60%" placeholder="这里输入问题">
+        问题：<input type="text" name="description" size="60%" placeholder="这里输入问题">
         <select name="qtype" onchange="showForm()">
           <option value="0">选择题</option>
           <option value="1">判断题</option>
@@ -29,7 +31,7 @@
         <hr/>
         <div id='pdt' style="display: none;">
             <label>正确答案:</label>
-            <select name="Ranwser">
+            <select name="Ranwser1">
               <option value="yes">---对---</option>
               <option value="no">---错---</option>
             </select>
@@ -38,9 +40,10 @@
             <textarea name="options" style="width: 60%;height: 500px;margin-top: 5px" placeholder="这里输入选项，用竖线‘|’分割"></textarea>
             <br/>
             <label>正确答案:</label>
-            <input type="text" name="Ranwser" size="20%" placeholder="这里输入正确答案的选项">
+            <input type="text" name="Ranwser0" size="20%" placeholder="这里输入正确答案的选项">
         </div>
         <textarea name="explanation" style="width: 60%;height: 500px;margin-top: 5px" placeholder="这里输入对该问题的解释"></textarea>
+        <input type="hidden" name="sid" value="$sid">
         <br/>
         <input type="submit" name="submit" value="添加">
     </form>
