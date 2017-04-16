@@ -13,16 +13,73 @@ $def with (res_data)
     <script type="text/javascript">
         var question_data = JSON.parse('$:res_data');
         var count = question_data.count;
-        var start = 1;
+        var start = 0;
 
         function makeQuestion(num){
+            //加载题目数量和问题描述
+            console.log("makeQuestion:"+num);
             jQuery("#q-count").text("第"+num+"题["+num+"/"+count+"]");
-            jQuery("#q-title").text(num+"."+question_data.data[num].description);
+            jQuery("#q-title").text((num+1)+"."+question_data.data[num].description);
+
+            //判断问题类型(1判断题，0选择题)，渲染对应选项
+            if (question_data.data[num].type == 1) {
+                var pdt = jQuery("#pdt").html();
+                jQuery("#options").html(pdt);
+            }
+
+            if (question_data.data[num].type == 0) {
+                var xzt = "";
+                var xzt_str = jQuery("#xzt").html();
+                var options = question_data.data[num].options;
+                if (options && options != "No option") {
+                    var options_array = options.split("|");
+                    for (var flag in options_array) {
+                        var option = options_array[flag];
+                        var i = option.indexOf(".")+1;
+                        var temp = xzt_str.replace(/CHAR/,option[0]).replace(/QSTRING/,option.substr(i));
+                        xzt += temp;
+                    }
+                }
+                jQuery("#options").html(xzt);
+            }
+        }
+
+        function answerCheck(num){
+                //选择的答案
+                console.log("answerCheck:"+num);
+                var current_answer = "";
+                if (question_data.data[num].type == 1) {
+                    current_answer = jQuery(this).parent().attr("id");
+                }
+                if (question_data.data[num].type == 0) {
+                    current_answer = jQuery(this).find(".ci").text();
+                }
+
+                //顶部结果显示
+                if (current_answer == question_data.data[num].answer) {
+                    jQuery("#res-check").text("回答正确").css("color","green");
+                } else {
+                    jQuery("#res-check").text("回答错误").css("color","red");
+                }
+
+                jQuery("#answer-explanation").text(question_data.data[num].explanation);
+                jQuery("#answer-tips").text("正确答案:"+question_data.data[num].answer);
         }
 
         jQuery(document).ready(function(){
             
-            makeQuestion(start)
+            makeQuestion(start);
+
+            jQuery("#options a").each(function(index,item) {
+                jQuery(item).bind("click",answerCheck(start));
+            });
+
+            jQuery("#nextq").click(function () {
+                start +=1;
+                if (start<count) {
+                    makeQuestion(start);
+                }
+            });
 
         });
     </script>
@@ -44,39 +101,39 @@ $def with (res_data)
                 </div>
                 <div id="question-body">
                     <div id="options">
-                        <div class="choices">
-                            <span class="ci">A</span>
-                            <span>我看小胖平时没什么事，应该没问题</span>
-                        </div>
-                        <div class="choices">
-                            <span class="ci">A</span>
-                            <span>我看小胖平时没什么事，应该没问题</span>
-                        </div>
-                        <div class="choices">
-                            <span class="ci">A</span>
-                            <span>我看小胖平时没什么事，应该没问题</span>
-                        </div>
-
+                        <span>加载问题选项失败</span>
                     </div>
                     </div>
                 </div>
             </div>
 
             <div id="resutlPopup" data-role="popup">
-                <p id="res-check">回答正确</p>
-                <p id="tips">SB就是天生的，你再怎么二也比不上人家。</p>
-                <div id="nextq">
-                    <p>下一题</p>
+                <p id="res-check">ROW</p>
+                <div id="tips">
+                    <p id="answer-tips">RA</p><br>
+                    <p id="answer-explanation">EXPLANATION</p>
                 </div>
+                <a id="nextq" href="#" data-rel="back" class="ui-btn">
+                    <p>下一题</p>
+                </a>
             </div>
             
             <div id="pdt" style="display: none;">
                 <div id="yes" class="pdt">
-                    <a href="#resutlPopup" data-rel="popup"><img src="../static/img/yes.png"></a>
+                    <a href="#resutlPopup" data-rel="popup" data-position-to="window"><img src="../static/img/yes.png"></a>
                 </div>
                 <div id="no" class="pdt">
-                    <a href="#resutlPopup" data-rel="popup"><img src="../static/img/no.png"></a>
+                    <a href="#resutlPopup" data-rel="popup" data-position-to="window"><img src="../static/img/no.png"></a>
                 </div>
+            </div>
+
+            <div id="xzt" style="display: none;">
+
+                <a href="#resutlPopup" data-rel="popup" data-position-to="window" class="choices">
+                    <span class="ci">CHAR</span>
+                    <span>QSTRING</span>
+                </a>
+
             </div>
 
         </div>

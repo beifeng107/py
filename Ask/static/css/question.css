@@ -19,6 +19,7 @@
     font-size: 18px;
     padding: 0 3px 0 3px;
     font-weight: bold;
+    width: 100%;
 }
 
 #question-body{
@@ -38,6 +39,7 @@ p{
     display: flex;
     margin-top: 5vh;
     flex-wrap: wrap;
+    justify-content: center; /*选择题需要此样式*/
 }
 
 #options .pdt{
@@ -55,6 +57,7 @@ p{
 
 #tips{
     text-indent: 20px;
+    width: 100%;
 }
 
 #nextq{
@@ -73,6 +76,11 @@ p{
     display: flex;
     align-items: center;
     border-radius: 5px;
+}
+
+#options a:link{
+    text-decoration: none;
+    color: #000;
 }
 
 .ci{
