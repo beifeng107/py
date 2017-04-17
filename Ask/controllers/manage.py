@@ -3,7 +3,7 @@ import web
 import time
 import json
 
-db_cn = web.database(dbn='mysql', user='root',pw='111111',db='test')
+db_cn = web.database(dbn='mysql', user='root',pw='111111',db='myblog')
 render = web.template.render('templates')
 
 class subject(object):

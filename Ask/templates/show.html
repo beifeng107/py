@@ -18,7 +18,7 @@ $def with (res_data)
         function makeQuestion(num){
             //加载题目数量和问题描述
             console.log("makeQuestion:"+num);
-            jQuery("#q-count").text("第"+num+"题["+num+"/"+count+"]");
+            jQuery("#q-count").text("第"+(num+1)+"题["+(num+1)+"/"+count+"]");
             jQuery("#q-title").text((num+1)+"."+question_data.data[num].description);
 
             //判断问题类型(1判断题，0选择题)，渲染对应选项
@@ -41,44 +41,51 @@ $def with (res_data)
                     }
                 }
                 jQuery("#options").html(xzt);
+
             }
         }
 
-        function answerCheck(num){
-                //选择的答案
-                console.log("answerCheck:"+num);
-                var current_answer = "";
-                if (question_data.data[num].type == 1) {
-                    current_answer = jQuery(this).parent().attr("id");
-                }
-                if (question_data.data[num].type == 0) {
-                    current_answer = jQuery(this).find(".ci").text();
-                }
+        function answerCheck(num,nowobj){
+            //选择的答案
+            var current_answer = "";
+            if (question_data.data[num].type == 1) {
+                current_answer = nowobj.parent().attr("id");
+            }
+            if (question_data.data[num].type == 0) {
+                current_answer = nowobj.find(".ci").text();
+            }
+            console.log("current_answer:"+current_answer);
+            //顶部结果显示
+            if (current_answer == question_data.data[num].answer) {
+                jQuery("#res-check").text("回答正确").css("color","green");
+            } else {
+                jQuery("#res-check").text("回答错误").css("color","red");
+            }
 
-                //顶部结果显示
-                if (current_answer == question_data.data[num].answer) {
-                    jQuery("#res-check").text("回答正确").css("color","green");
-                } else {
-                    jQuery("#res-check").text("回答错误").css("color","red");
-                }
+            jQuery("#answer-explanation").text(question_data.data[num].explanation);
+            jQuery("#answer-tips").text("正确答案:"+question_data.data[num].answer);
 
-                jQuery("#answer-explanation").text(question_data.data[num].explanation);
-                jQuery("#answer-tips").text("正确答案:"+question_data.data[num].answer);
+            if ((num+1) == count) {
+                jQuery("#nextq >p").text("首页");
+                jQuery("#nextq").attr("href","/").attr("data-ajax","false").removeAttr("data-rel");
+            }
         }
 
         jQuery(document).ready(function(){
             
             makeQuestion(start);
-
-            jQuery("#options a").each(function(index,item) {
-                jQuery(item).bind("click",answerCheck(start));
+            jQuery("#options a").click(function() {
+                answerCheck(start,jQuery(this));
             });
 
             jQuery("#nextq").click(function () {
                 start +=1;
                 if (start<count) {
                     makeQuestion(start);
-                }
+                    jQuery("#options a").click(function() {
+                        answerCheck(start,jQuery(this));
+                    });
+                } 
             });
 
         });
